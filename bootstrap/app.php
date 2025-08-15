@@ -5,6 +5,8 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,6 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->renderable(function (AuthenticationException $e)
         {
             return response()->json(['message' => 'Not authenticated'], 401);
+        });
+        $exceptions->renderable(function (ValidationException $e)
+        {
+            return response()->json(['message' => 'Validation failed'], 422);
         });
         
     })->create();
