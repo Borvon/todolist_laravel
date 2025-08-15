@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\dtos\v1\Task\TasksPublicDto;
 use App\Http\dtos\v1\Task\CreateTaskDto;
 use App\Http\dtos\v1\Task\TaskPublicDto;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -10,9 +11,17 @@ use App\Models\Task;
 
 class TaskService
 {
-    public function index()
+    public function index(int $limit, int $offset)
     {
+        if (!$user = Auth::user())
+        {
+            throw new AuthorizationException();
+        }
 
+        $tasks = $user->tasks()->skip($offset)->take($limit)->get();
+        $tasksDto = TasksPublicDto::fromCollection($tasks);
+
+        return $tasksDto;
     }
 
     public function show()

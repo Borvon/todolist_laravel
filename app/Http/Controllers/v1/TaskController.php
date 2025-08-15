@@ -10,9 +10,16 @@ use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request, TaskService $taskService)
     {
+        $validated = $request->validate([
+            'limit' => 'required|integer',
+            'offset' => 'required|integer'
+        ]);
 
+        $tasksDto = $taskService->index($validated['limit'], $validated['offset']);
+
+        return response()->json($tasksDto);
     }
 
     public function show()

@@ -13,4 +13,5 @@ Route::prefix('v1')
         Route::post('/login', [AuthController::class, 'login']);
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/tasks', [TaskController::class, 'store']);
+        Route::get('/tasks', [TaskController::class, 'index']);
     });
