@@ -22,9 +22,10 @@ class TaskController extends Controller
         return response()->json($tasksDto);
     }
 
-    public function show()
+    public function show($id, TaskService $taskService)
     {
-
+        $taskDto = $taskService->show($id);
+        return response()->json($taskDto);
     }
 
     public function store(Request $request, TaskService $taskService)

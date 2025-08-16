@@ -6,6 +6,7 @@ use App\Http\dtos\v1\Task\TasksPublicDto;
 use App\Http\dtos\v1\Task\CreateTaskDto;
 use App\Http\dtos\v1\Task\TaskPublicDto;
 use Illuminate\Auth\Access\AuthorizationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
 
@@ -24,9 +25,26 @@ class TaskService
         return $tasksDto;
     }
 
-    public function show()
+    public function show($id)
     {
+        if (!$user = Auth::user())
+        {
+            throw new AuthorizationException();
+        }
 
+        if (!$task = Task::find($id))
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if ($task->user_id != $user->id)
+        {
+            throw new AuthorizationException();
+        }
+
+        $taskDto = TaskPublicDto::fromModel($task);
+
+        return $taskDto;
     }
 
     public function store(CreateTaskDto $taskDto)
