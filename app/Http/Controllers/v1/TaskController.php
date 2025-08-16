@@ -76,8 +76,9 @@ class TaskController extends Controller
         return response()->json($responseDto);
     }
 
-    public function delete()
+    public function delete($id, TaskService $taskService)
     {
-
+        $taskService->delete($id);
+        return response()->noContent();
     }
 }

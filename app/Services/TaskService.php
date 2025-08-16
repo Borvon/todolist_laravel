@@ -97,8 +97,23 @@ class TaskService
         return $responseDto;
     }
 
-    public function delete()
+    public function delete($id)
     {
+        if (!$user = Auth::user())
+        {
+            throw new AuthorizationException();
+        }
 
+        if (!$task = Task::find($id))
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if ($task->user_id != $user->id)
+        {
+            throw new AuthorizationException();
+        }
+
+        $task->delete();
     }
 }
