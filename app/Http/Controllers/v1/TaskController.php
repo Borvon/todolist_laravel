@@ -37,7 +37,7 @@ class TaskController extends Controller
             'due_date' => 'nullable|date|after_or_equal:now',
             'status' => [
                 'nullable',
-                Rule::in(['new', 'in_progress', 'completed'])
+                Rule::in(['new', 'in_progress', 'done'])
             ]
         ]);
 
@@ -61,7 +61,7 @@ class TaskController extends Controller
             'due_date' => 'nullable|date|after_or_equal:now',
             'status' => [
                 'nullable',
-                Rule::in(['new', 'in_progress', 'completed'])
+                Rule::in(['new', 'in_progress', 'done'])
             ]
         ]);
 
