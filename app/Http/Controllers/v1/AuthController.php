@@ -12,9 +12,14 @@ class AuthController extends Controller
 {
     public function register(Request $request, AuthService $authService)
     {
+        $validated = $request->validate([
+            'login' => 'required',
+            'password' => 'required'
+        ]);
+
         $userDto = new AuthUserDto(
-            login: $request->input('login'),
-            password: $request->input('password')
+            login: $validated['login'],
+            password: $validated['password']
         );
 
         $responseDto = $authService->register($userDto);
@@ -24,9 +29,14 @@ class AuthController extends Controller
 
     public function login(Request $request, AuthService $authService)
     {
+        $validated = $request->validate([
+            'login' => 'required',
+            'password' => 'required'
+        ]);
+
         $userDto = new AuthUserDto(
-            login: $request->input('login'),
-            password: $request->input('password')
+            login: $validated['login'],
+            password: $validated['password']
         );
 
         $token = $authService->login($userDto);
